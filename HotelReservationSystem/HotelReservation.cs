@@ -108,5 +108,25 @@ namespace HotelReservationSystem
 
         }
 
+        //Find CheapestBestRated Hotel
+
+        public List<Hotel> FindCheapestBestRatedHotel(DateTime startDate, DateTime endDate, CustomerType customerType = 0)
+        {
+            var cheapandbestHotels = FindCheapestHotels(startDate, endDate, customerType);                           //take the cheapest hotel 
+            
+            var cheapestBestRatedHotels = new List<Hotel>();
+            var maxRating = 0;
+            
+            foreach (var hotel in cheapandbestHotels)
+                maxRating = Math.Max(maxRating, hotel.rating);                                                          //COmpare to get the best rated hotel
+            
+            foreach (var hotel in cheapandbestHotels)
+                if (hotel.rating == maxRating)
+                    cheapestBestRatedHotels.Add(hotel);                                                            //Add to the list
+            
+            return cheapestBestRatedHotels;
+
+        }
+
     }
 }

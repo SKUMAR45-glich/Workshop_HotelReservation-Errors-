@@ -18,15 +18,22 @@ namespace HotelReservationSystem
 
             AddSampleHotels(hotelReservation);                                                        //Add Hotel Name to HotelList
 
-            //Find the cheapest hotel
+            //Find the cheapest hotel in the date Range
             var cheapestHotels = hotelReservation.FindCheapestHotels(startDate, endDate, customerType);
             var cost = hotelReservation.CalculateTotalCost(cheapestHotels[0], startDate, endDate, customerType);
 
             //Print the name and cost
             Console.WriteLine("Hotel: {0}, Total Cost : {1}", cheapestHotels[0].name, cost) ;                       //Print the Name of first Element if same
 
+            //Best Rated Hotel in the date Range
             var bestRatedHotel = hotelReservation.FindBestRatedHotel(startDate, endDate);
             Console.WriteLine("Hotel: {0} Rating: {1}", bestRatedHotel[0].name,bestRatedHotel[0].rating);
+
+            //Best and cheapest hotels
+
+            var bestandcheapesthotel = hotelReservation.FindCheapestBestRatedHotel(endDate, endDate, customerType);
+            var totalcost = hotelReservation.CalculateTotalCost(cheapestHotels[0], startDate, endDate, customerType);
+            Console.WriteLine("Hotel: {0} Rating {1} Cost ",bestandcheapesthotel[0].name,bestandcheapesthotel[0].rating,cost);
         }
 
         public static void inputFromUserserInput()
