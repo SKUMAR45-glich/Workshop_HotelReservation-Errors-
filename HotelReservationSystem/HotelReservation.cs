@@ -28,6 +28,7 @@ namespace HotelReservationSystem
             hotels.Add(hotel.name, hotel);
         }
 
+        //Get Customer Type
         public static CustomerType GetCustomerType(string customerType)
         {
             if (customerType != "regular" && customerType != "reward")
@@ -36,11 +37,57 @@ namespace HotelReservationSystem
             return customerType == "regular" ? CustomerType.Regular : CustomerType.Reward;
         }
 
+        //Validate Customer Type
         public static bool ValidateCustomerType(string customerType)
         {
-            var customerTypeRegex = "^([Rr]eward|[Rr]egular)$";
+            var customerTypeRegex = "^([Rr]eward|[Rr]egular)$";                       //Regex Validation
             var regex = new Regex(customerTypeRegex);
             return regex.IsMatch(customerType);
+        }
+
+
+        //List of Hotels with Cheapest Rate
+        public List<Hotel> FindCheapestHotels(DateTime startDate, DateTime endDate, CustomerType customerType = 0)
+        {
+            if (startDate > endDate)
+            {
+                throw new HotelReservationException(ExceptionType.INVALID_DATES, "Dates Entered are Invalid");             //Exception
+            }
+
+            var cost = Int32.MaxValue;                                                      
+            var cheapestHotels = new List<Hotel>();                                            
+            
+            foreach (var hotel in hotels)
+            {
+                var temp = cost;
+                cost = Math.Min(cost, CalculateTotalCost(hotel.Value, startDate, endDate, customerType));
+
+            }
+            
+            foreach (var hotel in hotels)
+            {
+                if (CalculateTotalCost(hotel.Value, startDate, endDate, customerType) == cost)
+                    cheapestHotels.Add(hotel.Value);
+            }
+
+            return cheapestHotels;
+        }
+
+        public int CalculateTotalCost(Hotel hotel, DateTime startDate, DateTime endDate, CustomerType customerType = 0)
+        {
+            var cost = 0;
+            var weekdayRate = customerType == CustomerType.Regular ? hotel.weekdayRatesRegular : hotel.weekdayRatesLoyalty;
+            var weekendRate = customerType == CustomerType.Regular ? hotel.weekendRatesRegular : hotel.weekendRatesLoyalty;
+            
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))                            //forloop for date
+            {
+                if (date.DayOfWeek == DayOfWeek.Sunday || date.DayOfWeek == DayOfWeek.Saturday)                       //If Weekend
+                    cost += weekendRate;
+                else
+                    cost += weekdayRate;                                                            //Normal day
+            }
+
+            return cost;                                                                          //Total cost
         }
     }
 }

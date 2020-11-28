@@ -18,6 +18,13 @@ namespace HotelReservationSystem
 
             AddSampleHotels(hotelReservation);                                                        //Add Hotel Name to HotelList
 
+            //Find the cheapest hotel
+            var cheapestHotels = hotelReservation.FindCheapestHotels(startDate, endDate, customerType);
+            var cost = hotelReservation.CalculateTotalCost(cheapestHotels[0], startDate, endDate, customerType);
+
+            //Print the name and cost
+            Console.WriteLine("{0}, Total Cost : {1}", cheapestHotels[0].name, cost);                       //Print the Name of first Element if same
+
         }
 
         public static void inputFromUserserInput()
