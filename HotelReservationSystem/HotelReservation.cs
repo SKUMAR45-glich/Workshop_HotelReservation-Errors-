@@ -54,25 +54,26 @@ namespace HotelReservationSystem
                 throw new HotelReservationException(ExceptionType.INVALID_DATES, "Dates Entered are Invalid");             //Exception
             }
 
-            var cost = Int32.MaxValue;                                                      
+            var cost = Int32.MaxValue;                                                       //MaxValue
             var cheapestHotels = new List<Hotel>();                                            
             
             foreach (var hotel in hotels)
             {
                 var temp = cost;
-                cost = Math.Min(cost, CalculateTotalCost(hotel.Value, startDate, endDate, customerType));
+                cost = Math.Min(cost, CalculateTotalCost(hotel.Value, startDate, endDate, customerType));                 //Function to Compare
 
             }
             
             foreach (var hotel in hotels)
             {
-                if (CalculateTotalCost(hotel.Value, startDate, endDate, customerType) == cost)
+                if (CalculateTotalCost(hotel.Value, startDate, endDate, customerType) == cost)                                 //If Minimum add to the list
                     cheapestHotels.Add(hotel.Value);
             }
 
             return cheapestHotels;
         }
 
+        //Total Cost
         public int CalculateTotalCost(Hotel hotel, DateTime startDate, DateTime endDate, CustomerType customerType = 0)
         {
             var cost = 0;
@@ -89,5 +90,23 @@ namespace HotelReservationSystem
 
             return cost;                                                                          //Total cost
         }
+
+        //Best Rated Hote;
+        public List<Hotel> FindBestRatedHotel(DateTime startDate, DateTime endDate)
+        {
+            var bestRatedHotels = new List<Hotel>();
+            var maxRating = 0;                                                                    //Can be Int32.Min also
+            
+            foreach (var hotel in hotels)
+                maxRating = Math.Max(maxRating, hotel.Value.rating);                                  //Loop to get Maximum value
+            
+            foreach (var hotel in hotels)
+                if (hotel.Value.rating == maxRating)
+                    bestRatedHotels.Add(hotel.Value);
+            
+            return bestRatedHotels;
+
+        }
+
     }
 }

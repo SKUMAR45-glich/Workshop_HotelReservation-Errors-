@@ -23,8 +23,10 @@ namespace HotelReservationSystem
             var cost = hotelReservation.CalculateTotalCost(cheapestHotels[0], startDate, endDate, customerType);
 
             //Print the name and cost
-            Console.WriteLine("{0}, Total Cost : {1}", cheapestHotels[0].name, cost);                       //Print the Name of first Element if same
+            Console.WriteLine("Hotel: {0}, Total Cost : {1}", cheapestHotels[0].name, cost) ;                       //Print the Name of first Element if same
 
+            var bestRatedHotel = hotelReservation.FindBestRatedHotel(startDate, endDate);
+            Console.WriteLine("Hotel: {0} Rating: {1}", bestRatedHotel[0].name,bestRatedHotel[0].rating);
         }
 
         public static void inputFromUserserInput()
